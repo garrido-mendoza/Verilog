@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: Skyworks (DEMO)  
+// Company: N/A
 // Engineer: Diego Garrido-Mendoza 
 // 
 // Create Date: 01/20/2025 11:49:54 PM
@@ -11,13 +11,25 @@
 // Tool Versions: Vivado 2018.3
 // Description: This testbench reads data from a text file, writes it to the BRAM, 
 //              and then reads it back to generate a report. 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
+//
+// Additional Comments: 
+// This is an example of the content of the test_input_data.txt file:
+// 00000001
+// 00000010
+// 00000011
+// 00000100
+// 00000101
+// 00000110
+// 00000111
+// 00001000
+// 00001001
+// 00001010
+// 00001011
+// 00001100
+// 00001101
+// 00001110
+// 00001111
+// 00010000
 //////////////////////////////////////////////////////////////////////////////////
 
 module BRAM_tb ();
@@ -68,7 +80,7 @@ module BRAM_tb ();
         #10 rst = 0;
         
         // Read test data from the text file.
-        $readmemb("/home/diego/Documents/FPGA/Sources/test_input_data.txt", test_input_data);
+        $readmemb("test_input_data.txt", test_input_data);
 
         // Write data to BRAM.
         for (i = 0; i < DEPTH; i = i + 1) begin
