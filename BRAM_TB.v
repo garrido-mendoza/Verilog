@@ -32,7 +32,7 @@
 // 00010000
 //////////////////////////////////////////////////////////////////////////////////
 
-module BRAM_tb ();
+module BRAM_TB ();
 
     parameter DATA_WIDTH = 8;
     parameter ADDR_WIDTH = 4;
