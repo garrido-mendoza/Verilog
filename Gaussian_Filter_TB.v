@@ -5,9 +5,15 @@
 // Module Name: Gaussian_Filter_TB
 //
 // Description: 
-// 
+// This testbench is intended to test the functionality of the Gaussian_Filter module.
+// sets up the necessary signals to drive the Gaussian_Filter module, generates clock 
+// signals, and verifies the output of the filtering process by providing specific 
+// input data.
 //
 // Additional Comments:
+// After providing the input data, the testbench waits for a few clock periods and 
+// checks if the done_o signal is asserted. If it is, it prints the Gaussian output 
+// value
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
