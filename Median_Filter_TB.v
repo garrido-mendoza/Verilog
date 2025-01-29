@@ -24,6 +24,9 @@ module Median_Filter_TB();
     reg [7:0] d1_i;
     reg [7:0] d2_i;
     reg [7:0] d3_i;
+    
+    reg [3:0] count;
+    
     wire done_o;
     wire [7:0] median_o;
 
@@ -68,7 +71,12 @@ module Median_Filter_TB();
         d2_i = 8'd8;
         d3_i = 8'd9;  
         
-        #(`clk_period*5);
+        #(`clk_period*4);
+        if (done_o)
+            $display("Test Case Passed: median_o = %d", median_o);
+        else
+            $display("Test Case Failed: done_o not asserted");
+            
         $stop;
     end
 
