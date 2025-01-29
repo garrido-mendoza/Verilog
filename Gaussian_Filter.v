@@ -3,7 +3,13 @@
 // Company: N/A 
 // Engineer: Diego Garrido-Mendoza 
 // Module Name: Gaussian_Filter
-// Description: 
+//
+// Description:
+// The module takes three lines of 8-bit input data (d1_i, d2_i, d3_i), processes 
+// it using a Gaussian kernel, and produces a filtered 8-bit output (gaussian_o). 
+// The Gaussian filtering process consists of several steps, including data shifting, 
+// data multiplication with the Gaussian kernel, summing the products, and dividing 
+// the sum by 16 to get the final output. 
 // 
 // Additional Comments:
 // Input data:       Data sorting:                 Data & Gaussian kernel products:     --
@@ -34,6 +40,10 @@ module Gaussian_Filter(
     output reg [7:0] gaussian_o 
     );
     
+    //-------------------------------------------------------------------------------- 
+    // Input data registers.
+    //-------------------------------------------------------------------------------- 
+    
     // Data line 1. Registers for {1, 2, 3}
     reg [7:0] d11;  // {1}
     reg [7:0] d12;  // {2}
@@ -49,19 +59,26 @@ module Gaussian_Filter(
     reg [7:0] d32;  // {8}
     reg [7:0] d33;  // {9}      
     
+    //-------------------------------------------------------------------------------- 
     // Convolution result registers. 
+    //--------------------------------------------------------------------------------       
+    
     reg [11:0] gs1;
     reg [11:0] gs2;
     reg [11:0] gs3;   
     reg [11:0] gs_sum;
     
+    //-------------------------------------------------------------------------------- 
+    // State machine registers. 
+    //-------------------------------------------------------------------------------- 
     reg hold;   // The hold signal ensures that the circuit is enabled only when needed, preventing unnecessary operations.
                 // It helps in managing the state of the module, particularly in determining when to start and stop the filtering process.
     reg [3:0] count;         
     
     //--------------------------------------------------------------------------------  
     // Data shift:
-    // This process involves 9 clock cycles after reset. It shifts data into 9 registers. 
+    // The input data is sequentially shifted into the registers over nine clock cycles 
+    // after a reset. This helps in organizing the data for processing. 
     //-------------------------------------------------------------------------------- 
     
     // Input channel d1_i.
@@ -105,7 +122,9 @@ module Gaussian_Filter(
 
     //--------------------------------------------------------------------------------  
     // Data & Gaussian kernel products:
-    // This is the 1st step of the convolution. 
+    // This is the 1st step of the convolution. The input data is multiplied by the 
+    // Gaussian kernel weights. The multiplication results are stored in three registers 
+    // (gs1, gs2, gs3) 
     //-------------------------------------------------------------------------------- 
 
     always @(posedge clk or negedge rst_n) begin
@@ -122,7 +141,8 @@ module Gaussian_Filter(
     
     //--------------------------------------------------------------------------------  
     // Gaussian sum of products:
-    // This is the 2nd step of the convolution. 
+    // This is the 2nd step of the convolution. The partial results are summed up into 
+    // a single value (gs_sum).
     //-------------------------------------------------------------------------------- 
 
     always @(posedge clk or negedge rst_n) begin
@@ -135,7 +155,9 @@ module Gaussian_Filter(
 
     //--------------------------------------------------------------------------------  
     // Gaussian output (divide by 16):
-    // This is the 3rd step of the convolution. 
+    // This is the 3rd step of the convolution. The sum of products is divided by 16 
+    // (accomplished by a bitwise right shift of 4) to produce the final Gaussian-filtered 
+    // output (gaussian_o).
     //-------------------------------------------------------------------------------- 
 
     always @(posedge clk or negedge rst_n) begin
@@ -158,7 +180,9 @@ module Gaussian_Filter(
         end else begin
             //-------------------------------------------------------------------------------- 
             // State management:
-            // Managing the state and timing of the median filtering process.
+            // A state machine manages the filtering process, ensuring the module operates 
+            // correctly, starts, and completes the filtering process as needed. The done_o 
+            // signal indicates when the filtering process is finished.
             //-------------------------------------------------------------------------------- 
             case (hold)
                 //-------------------------------------------------------------------------------- 
