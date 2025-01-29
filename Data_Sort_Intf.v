@@ -24,9 +24,9 @@
 // The sorting process involves:
 // - Finding the maximum, median, and minimum values for each row of the matrix.
 //   For example:
-//   - For the first row {3, 2, 1}, the sorted values are {3, 2, 1}. 
-//   - For the second row {6, 5, 4}, the sorted values are {6, 5, 4}. 
-//   - For the third row {9, 8, 7}, the sorted values are {9, 8, 7}.
+//   - For the first row {1, 2, 3}, the sorted values are {3, 2, 1}. 
+//   - For the second row {4, 5, 6}, the sorted values are {6, 5, 4}. 
+//   - For the third row {7, 8, 9}, the sorted values are {9, 8, 7}.
 //
 // Finding the Median Value
 // The final step is to find the median value for the entire matrix. This involves:
