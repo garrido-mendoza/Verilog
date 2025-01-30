@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 
 //////////////////////////////////////////////////////////////////////////////////
-// Company: Skyworks (DEMO) 
+// Company: N/A
 // Engineer: Diego Garrido-Mendoza 
 // 
 // Create Date: 01/20/2025 10:49:15 PM
