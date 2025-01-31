@@ -38,9 +38,7 @@ module UART_Rx #
     // FSM states.
     //--------------------------------------------------------------------------------
     localparam [1:0] IDLE = 2'b00, 
-                     START = 2'b01, 
-                     RECEIVE = 2'b10, 
-                     STOP = 2'b11;
+                     START = 2'b01;
     
     reg [1:0] state = IDLE;
 
@@ -80,15 +78,6 @@ module UART_Rx #
                     if (bit_count <= 7) begin
                         bit_count <= bit_count + 1;
 						dout_rx <= {rx, dout_rx[7:1]};  // Shift in received data
-                    end else begin
-                        bit_count <= 0;
-                    end
-                end
-
-                RECEIVE: begin 
-                    if (bit_count < 8) begin
-                        dout_rx <= {rx, dout_rx[7:1]};  // Shift in received data
-                        bit_count <= bit_count + 1;
                     end else begin
                         bit_count <= 0;
 						done_rx <= 1'b1;
