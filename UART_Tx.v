@@ -53,7 +53,7 @@ module UART_Tx #
     end
 
     // State machine for UART transmission
-    always @(posedge uart_clk or negedge rst_n) begin
+    always @(posedge uart_clk) begin
         if (!rst_n) begin 
             state <= IDLE;
         end else begin
@@ -83,7 +83,7 @@ module UART_Tx #
                     end
                 end
                 
-                default: state <= IDLE;
+//                default: state <= IDLE;
             endcase                        
         end    
     end
