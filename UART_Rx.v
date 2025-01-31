@@ -66,22 +66,22 @@ module UART_Rx #
             case (state) 
                 IDLE: begin 
                     dout_rx <= 8'h00;
-					bit_count <= 0;
-					done_rx <= 1'b0;
+                    bit_count <= 0;
+                    done_rx <= 1'b0;
                     if (rx == 1'b0)  // Detect start bit
                         state <= START;
                     else
-						state <= IDLE;
+                        state <= IDLE;
                 end
 
                 START: begin
                     if (bit_count <= 7) begin
                         bit_count <= bit_count + 1;
-						dout_rx <= {rx, dout_rx[7:1]};  // Shift in received data
+                        dout_rx <= {rx, dout_rx[7:1]};  // Shift in received data
                     end else begin
                         bit_count <= 0;
-						done_rx <= 1'b1;
-						state <= IDLE;   
+                        done_rx <= 1'b1;
+                        state <= IDLE;   
                     end
                 end
                 
