@@ -34,9 +34,10 @@ module UART_Tx #
 
     // State machine states
     localparam [1:0] IDLE = 2'b00, 
-                     START = 2'b01, 
-                     TRANSFER = 2'b10, 
-                     STOP = 2'b11; 
+//                     START = 2'b01,
+                     TRANSFER = 2'b10; 
+//                     TRANSFER = 2'b10, 
+//                     STOP = 2'b11; 
     
     reg [1:0] state = IDLE;
     
@@ -60,28 +61,30 @@ module UART_Tx #
             case (state) 
                 IDLE: begin 
                     bit_count <= 0;
-		    tx <= 1'b1;
-		    done_tx <= 1'b0;
+					tx <= 1'b1;
+					done_tx <= 1'b0;
                     if (data_update) begin
                         state <= TRANSFER;
                         din <= din_tx;
                         tx <= 1'b0;
                     end else
-			state <= IDLE;
+						state <= IDLE;
                 end
 
                 TRANSFER: begin 
                     if (bit_count <= 7) begin
                         tx <= din[bit_count];
                         bit_count <= bit_count + 1;
-			state <= TRANSFER;
+						state <= TRANSFER;
                     end else begin
                         bit_count <= 0;
-			tx <= 1'b1;
-			state <= IDLE;
-			done_tx <= 1'b1;
+						tx <= 1'b1;
+						state <= IDLE;
+						done_tx <= 1'b1;
                     end
                 end
+                
+//                default: state <= IDLE;
             endcase                        
         end    
     end
