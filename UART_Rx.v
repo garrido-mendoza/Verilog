@@ -80,9 +80,10 @@ module UART_Rx #(
     //--------------------------------------------------------------------------------
     always @(posedge uart_clk or negedge rst_n) begin
         if (!rst_n) begin 
-            dout_rx <= 8'h00;
+            state <= IDLE;
             bit_count <= 0;
             done_rx <= 1'b0;
+            dout_rx <= 8'h00;
         end else begin
             case (state) 
                 //--------------------------------------------------------------------------------
@@ -92,9 +93,9 @@ module UART_Rx #(
                 // - Upon detecting the start bit, the module transitions to the START state.
                 //--------------------------------------------------------------------------------
                 IDLE: begin                 
-                    dout_rx <= 8'h00;
                     bit_count <= 0;
                     done_rx <= 1'b0;
+                    dout_rx <= 8'h00;
                     if (rx == 1'b0) begin  // Detect start bit
                         state <= START;
                     end else begin
@@ -109,13 +110,13 @@ module UART_Rx #(
                 //   within this state.
                 //--------------------------------------------------------------------------------
                 START: begin                  
-                    if (bit_count <= 7) begin
+                    if (bit_count < 8) begin
                         bit_count <= bit_count + 1;
                         dout_rx <= {rx, dout_rx[7:1]};
                     end else begin
                         bit_count <= 0;
-                        done_rx <= 1'b1;
-                        state <= IDLE;
+                        done_rx <= 1'b1;             
+                        state <= IDLE;           
                     end
                 end
 
