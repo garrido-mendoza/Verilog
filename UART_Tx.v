@@ -130,5 +130,3 @@ module UART_Tx #(
     end
 
 endmodule
-
-
