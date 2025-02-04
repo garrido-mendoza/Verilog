@@ -90,29 +90,37 @@ module UART_Tx #(
                     bit_count <= 0;
                     tx <= 1'b1;
                     done_tx <= 1'b0;
-                    if (data_update) begin
+                    // Start Bit: When the module detects a data_update signal, it transitions to  
+                    // TRANSFER and immediately sets the tx line to '0', signaling the start bit.
+                    if (data_update) begin  
                         state <= TRANSFER;
+                        tx <= 1'b0;         // Start bit.
                         din <= din_tx;
-                        tx <= 1'b0;
                     end
                 end
                 //--------------------------------------------------------------------------------
                 // State 2 (TRANSFER):                                                                               
-                // - The TRANSFER state handles the entire process of sending the start bit, data bits, and stop bit.
-                // - Although traditionally, UART transmission would have separate states for START, DATA, and STOP, 
-                //   combining them in a single state like TRANSFER works if the logic for these steps is properly   
-                //   managed within the state.       
+                // - The TRANSFER state handles the entire process of sending the start bit, data bits, 
+                //   and stop bit.
+                // - Although traditionally, UART transmission would have separate states for START, 
+                //   DATA, and STOP, combining them in a single state like TRANSFER works if the logic 
+                //   for these steps is properly managed within the state.       
+                // - By including the stop bit transmission within the TRANSFER state, the state machine 
+                //   stays in TRANSFER long enough to ensure that the stop bit is transmitted before 
+                //   transitioning back to IDLE. This ensures that the entire UART frame (start bit, 
+                //   data bits, stop bit) is correctly transmitted.
                 //--------------------------------------------------------------------------------                                                                
-                TRANSFER: begin                                                    
-                    if (bit_count <= 7) begin
+                TRANSFER: begin                                                   
+                    if (bit_count < 8) begin    // The state machine stays in TRANSFER and iterates through each bit of the data.
                         bit_count <= bit_count + 1;
-                        tx <= din[bit_count];
+                        tx <= din[bit_count];   // The bits are sent sequentially on each positive edge of the uart_clk.
                         state <= TRANSFER;
                     end else begin
                         bit_count <= 0;
-                        tx <= 1'b1;
+                        tx <= 1'b1;         // After all data bits are sent, the tx line is set to '1'.
+                        done_tx <= 1'b1;    // Stop bit. The state machine ensures that the stop bit is transmitted 
+                                            // before transitioning back to IDLE.
                         state <= IDLE;
-                        done_tx <= 1'b1;
                     end
                 end
                 
@@ -122,3 +130,5 @@ module UART_Tx #(
     end
 
 endmodule
+
+
