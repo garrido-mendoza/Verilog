@@ -67,7 +67,7 @@ module UART_TB;
                 data_tx = {tx, data_tx[7:1]};   // Shifts and stores the transmitted bit into data_tx.
             end
             @(posedge done_tx);                 // Waits for the transmission to complete (donetx goes high).
-            $display("Transmitted Data: %h", din_tx);
+//            $display("\n Transmitted Data: %h", din_tx);
             
             // Reception test
             data_rx = 0;
@@ -96,7 +96,7 @@ module UART_TB;
 
             // Print data in table format
 //            $display(" %-12h  | %-12h  | %-12b  | %-12b", dintx, doutrx, dut.utx.state, dut.urx.state);
-            $display("\n------------------------------");
+//            $display("\n------------------------------");
             $display("%-12s %-12s", "Transmitted", "| Received");
             $display("------------------------------");
             $display(" %-12h  | %-12h", din_tx, dout_rx);
